@@ -1,3 +1,16 @@
 h1 {
-  color: red;
+  color:rgb(121, 87, 2);
+  font-family: Arial, Helvetica, sans-serif;
+
+}
+
+body {background-color:lightsteelblue;
+}
+
+a {
+  border-color: rgb(180, 119, 75);
+  border-style: solid;
+  border-width:thin;
+  margin-right: auto; 
+
 }

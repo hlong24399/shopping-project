@@ -22,11 +22,12 @@ db.on('disconnected', () => console.log('mongo disconnected'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("Public"));
 
-
+// default to index
 app.get("/", (req, res) => {
     res.redirect('/products');
 });
 
+// seed
 app.get('/products/seed', (req, res) => {
     Product.deleteMany({}, (error, allProduct) => {});
 
@@ -36,6 +37,8 @@ app.get('/products/seed', (req, res) => {
         res.redirect('/products');
     });
 });
+
+// show
 app.get('/products', (req, res) => {
     Product.find({}, (error, allProduct) => {
         res.render('index.ejs', {
@@ -44,18 +47,20 @@ app.get('/products', (req, res) => {
 	});
 });
 
+// add
 app.post('/products', (req, res) => {
     Product.create(req.body, (error, createdProduct) => {
         console.log(error);
-        // res.send(createdProduct);
         res.redirect("/products");
     });
 })
 
+// add
 app.get('/products/new', (req, res) => {
     res.render('new.ejs');
 });
 
+// show
 app.get('/products/:id', (req, res) => {
     Product.findById(req.params.id, (err, foundProduct) => {
         res.render('show.ejs', {
@@ -64,6 +69,7 @@ app.get('/products/:id', (req, res) => {
     }); 
 });
 
+// Find item to edit
 app.get('/products/edit/:id', (req, res) => {
     Product.findById(req.params.id, (error, product) => {
         if (error)
@@ -74,20 +80,36 @@ app.get('/products/edit/:id', (req, res) => {
     })
 })
 
+// Edit
 app.post('/product/edit', (req, res) => {
     id = req.body.id;
     Product.findByIdAndUpdate(id, req.body, (error, product) => {
-        if (error)
-        {
-            res.send(error);
-        }
-        else
-        {
-            res.render("show.ejs", {product: product});
-        }
+        if (error) {res.send(error);}
+        else res.render("show.ejs", {product: product});
     })
 });
 
+// Buy
+app.get('/products/buy/:id', (req, res) => {
+    Product.findById(req.params.id, (error, product) => {
+        qty = product.qty;
+        updatedQty = qty - 1;
+        if (updatedQty <= 0) updatedQty = 0;
+        Product.findByIdAndUpdate(req.params.id, {qty: updatedQty}, (error) => {
+            if (error) res.send(error);
+            res.redirect("/");
+        })
+    })
+});
+
+// Delete
+app.get("/products/delete/:id",function(req,res){
+    Product.findOneAndRemove({_id:req.params.id},function(err){
+     Product.find({},function(err,product){
+      res.redirect("/");
+     });
+    });
+   });
 
 // Listener
 const PORT = process.env.PORT;

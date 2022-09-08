@@ -11,7 +11,12 @@
 <body>
 	<nav>
 		<a href="/products/edit/<%= product._id %>">Update Product</a>
+		<br>
 		<a href="/products">Back to Products Index</a>
+		<br>
+		<a href="/products/buy/<%= product._id %>">Buy</a>
+		<br>
+		<a href="/products/delete/<%= product._id %>">Delete</a>
 	</nav>
 	<h1>
 		<%=product.name%>
@@ -19,7 +24,16 @@
 	description:<%=product.description%>
 		<br />
 		<img width="250px" height="250px" src=<%=product.img%>>
-		quantitiy:<%=product.qty%>
+		<br>
+
+		<!-- Handle when the qty is out of stock -->
+		<% if (product.qty <= 0) { %>
+				<p> OUT OF STOCK </p>
+			<%} else { %>
+				<p>quantitiy: <%=product.qty%></p>
+			<% } %>
+
+		
 </body>
 
 </html>
