@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit List</title>
+</head>
+
+<form method="POST" action="/product/edit/">
+  <input type="hidden" name="id" value="<%=product._id%>">
+  Name: <input type="text" name="name" value=<%=product.name%> /><br />
+  description: <input type="text" name="description" value=<%=product.description%> /><br />
+  img: <input type="text" name="img" value="<%=product.img%>"/><br />
+  price: <input type="text" name="price" value=<%=product.price%> /><br />
+  qty: <input type="text" name="qty" value=<%=product.qty%> /><br />
+  <input type="submit" name="" value="Update product" />
+</form>
